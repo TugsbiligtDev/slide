@@ -267,7 +267,7 @@ export default function Home() {
                   </h2>
                 </div>
                 <div className="space-y-4">
-                  {currentSlideData.content?.map((item, index) => (
+                  {Array.isArray(currentSlideData.content) && currentSlideData.content.map((item, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
@@ -277,7 +277,7 @@ export default function Home() {
                     >
                       <CheckCircle className="w-6 h-6 text-pineder-teal mt-1 flex-shrink-0" />
                       <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300">
-                        {item}
+                        {typeof item === 'string' ? item : item.name}
                       </p>
                     </motion.div>
                   ))}
@@ -291,7 +291,7 @@ export default function Home() {
                   {currentSlideData.title}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {currentSlideData.content?.map((step, index) => (
+                  {Array.isArray(currentSlideData.content) && currentSlideData.content.map((step, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
@@ -303,7 +303,7 @@ export default function Home() {
                         {index + 1}
                       </div>
                       <p className="text-sm md:text-base text-gray-700 dark:text-gray-300">
-                        {step}
+                        {typeof step === 'string' ? step : step.name}
                       </p>
                     </motion.div>
                   ))}
@@ -317,7 +317,7 @@ export default function Home() {
                   {currentSlideData.title}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {Object.entries(currentSlideData.content || {}).map(
+                  {currentSlideData.content && typeof currentSlideData.content === 'object' && !Array.isArray(currentSlideData.content) && Object.entries(currentSlideData.content).map(
                     ([key, benefits], index) => (
                       <motion.div
                         key={key}
@@ -330,7 +330,7 @@ export default function Home() {
                           For {key}
                         </h3>
                         <ul className="space-y-2">
-                          {benefits.map((benefit, benefitIndex) => (
+                          {Array.isArray(benefits) && benefits.map((benefit, benefitIndex) => (
                             <li
                               key={benefitIndex}
                               className="flex items-center gap-3"
@@ -355,9 +355,9 @@ export default function Home() {
                   {currentSlideData.title}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                  {currentSlideData.content?.map((member, index) => (
+                  {Array.isArray(currentSlideData.content) && currentSlideData.content.map((member, index) => (
                     <motion.div
-                      key={member.id}
+                      key={typeof member === 'object' && member.id ? member.id : index}
                       initial={{ opacity: 0, y: 50, scale: 0.8 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       transition={{
@@ -374,7 +374,7 @@ export default function Home() {
                         className="relative mb-6 mx-auto"
                       >
                         <div className="w-24 h-24 mx-auto bg-gradient-to-br from-pineder-teal via-pineder-blue to-pineder-purple rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg group-hover:shadow-2xl transition-all duration-300">
-                          {member.avatar}
+                          {typeof member === 'object' && member.avatar ? member.avatar : '?'}
                         </div>
                         <motion.div
                           className="absolute -inset-2 bg-gradient-to-r from-pineder-teal to-pineder-blue rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300"
@@ -394,13 +394,13 @@ export default function Home() {
                         transition={{ delay: index * 0.3 + 0.3, duration: 0.5 }}
                       >
                         <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-                          {member.name}
+                          {typeof member === 'object' && member.name ? member.name : 'Unknown'}
                         </h3>
                         <p className="text-lg font-medium text-pineder-blue mb-3">
-                          {member.role}
+                          {typeof member === 'object' && member.role ? member.role : 'Unknown Role'}
                         </p>
                         <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                          {member.description}
+                          {typeof member === 'object' && member.description ? member.description : 'No description available'}
                         </p>
                       </motion.div>
                     </motion.div>
